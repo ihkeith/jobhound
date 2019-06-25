@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- META -->
+	<title>JOBhound helps you get a job</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta name="description" content="" />
+	
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/kickstart.css') }}" media="all" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" media="all" /> 
+	
+	<!-- Javascript -->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/kickstart.js') }}"></script>
+</head>
+    <body>
+        <nav class="navbar">
+            <a href="{{ url_for('index') }}" id="logo"><span>JOB</span>hound</a>
+            <ul>
+                {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('logout') }}" class="first" title="Log out">Log Out</a></li>
+                {% else %}
+                <li><a href="{{ url_for('register') }}" class="first" title="Register">Register</a></li>
+                <li><a href="{{ url_for('login') }}" class="" title="Log in">Login</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        <div class="callout callout-top clearfix" style="background: #4598ef url({{ url_for('static', filename='img/watercolor-backgrounds-10.jpg') }}) repeat;">
+            {% if current_user.is_authenticated %}
+            
+            <h1 class="center">Howdy {{ current_user.username }}</h1>
+            
+            {% else %}
+            <h1 class="center">Welcome to JobSeeker.</h1>
+            <h4 style="color:#999;margin-bottom:40px;" class="center">JOBhound is an app that aims to help you in your job search!</h4>
+            {% endif %}
+        </div>
+        <div class="grid">
+            <div class="col_12" style="margin-top:100px;">
+                <!-- Flash messages -->
+                {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="notice {{ category }}">
+                            <i class="icon-remove-sign icon-large right"></i>
+                            {{ message }}
+                            <a href="#close" class="icon-remove">&times;</a></div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+                {% block content %}{% endblock %}
+            </div>
+        </div> <!-- End Grid -->
+    </body>
+</html>
